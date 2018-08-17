@@ -11,16 +11,28 @@
 
 // function to validate required fields
 function validateRequired(){
-    var requiredElements = document.querySelectorAll("input");
-    var errorDiv = document.getElementById("#errorText");
+    var requiredElements = document.querySelectorAll("#contactinfo input");
+    var errorDiv = document.getElementById("errorText"); 
+    var elementCount = requiredElements.length;
     var currentElement;
     try {
-        for (var i = 0; i < requiredElements.length; i++) {
-            const element = array[i];
-            
+        for (var i = 0; i < elementCount; i++) {
+            currentElement = requiredElements[i];
+            if (currentElement.value === "") {
+                currentElement.style.background = "rgb(255,233,233)";
+                formValidity = false;
+            } else {
+                currentElement.style.background = "white";
+                errorDiv.style.display = "none";
+            }
         }
-    } catch (error) {
-        
+
+        if (formValidity === false) {
+            throw "Please fill out all required fields";
+        }
+    } catch (msg) {
+        errorDiv.style.display = "block";
+        errorDiv.innerHTML = msg;
     }
 }
 
@@ -35,6 +47,10 @@ function validateForm(evt){
     formValidity = true;
 
     validateRequired();
+
+    if (formValidity === true) {
+        document.getElementsByTagName("form")[0].submit();
+    }
 }
 
 // function to create event listeners
